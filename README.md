@@ -10,7 +10,7 @@ NestJS 기반의 개인 데이터의 공유/보상 시스템 백엔드 API 서�
 * **Language**: TypeScript
 * **Framework**: [NestJS](https://nestjs.com/)
 * **Blockchain**: Ethers.js 기반 스마트 컨트랙트 연동
-* **환경 구성**: Docker, Render, GitHub Actions
+* **환경 구성**: Docker, Render
 
 ---
 
