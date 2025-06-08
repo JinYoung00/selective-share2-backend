@@ -10,7 +10,7 @@ RUN npm install
 
 # 애플리케이션 소스 복사
 COPY . .
-COPY .env .env
+
 # NestJS 빌드
 RUN npm run build
 
@@ -23,7 +23,6 @@ WORKDIR /app
 COPY --from=builder /app/package*.json ./
 COPY --from=builder /app/node_modules ./node_modules
 COPY --from=builder /app/dist ./dist
-COPY --from=builder /app/.env ./
 
 # 애플리케이션 실행
 CMD ["node", "dist/main.js"]

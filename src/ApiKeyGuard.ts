@@ -7,6 +7,10 @@ export class ApiKeyGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
+    if (request.path === '/health' || request.path === '/ping') {
+      return true;
+    }
+
     const apiKey = request.headers['x-api-key'];
     const validKey = this.configService.get<string>('API_KEY');
 
