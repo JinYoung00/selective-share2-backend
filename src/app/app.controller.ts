@@ -17,4 +17,6 @@ export class AppController {
   ): Promise<any> {
     return this.appService.rewardUser(userAddress, body.type, body.signature);
   }
+
+  
 }

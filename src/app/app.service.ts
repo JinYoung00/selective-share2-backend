@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Contract } from './app.contract';
+import { Contract } from './contract/app.contract';
 import { ethers, verifyMessage, keccak256 } from "ethers";
 
 @Injectable()

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ethers } from "ethers";
-import { abi } from "../abi/contract.json"; 
+import { abi } from "./abi/contract.json"; 
 import * as dotenv from "dotenv";
 dotenv.config();
 
