@@ -1,30 +1,26 @@
 import { Injectable } from '@nestjs/common';
 import { ethers } from "ethers";
 import { abi } from "./abi/contract.json"; 
-import * as dotenv from "dotenv";
-dotenv.config();
-
-const CONTRACT_ADDRESS = process.env.CONTRACT_ADDRESS || ""
-const PROVIDER_URL = process.env.PROVIDER_URL || "http://localhost:8545"; 
-const OPERATOR_PRIVATE = process.env.OPERATOR_PRIVATE || "";
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class Contract {
-  static callStateChangingFunction(userAddress: string, arg1: number) {
-    throw new Error('Method not implemented.');
-  }
   private provider: ethers.JsonRpcProvider;
   private contract: ethers.Contract;
+  private operatorPrivate: string;
 
-  constructor() {
-    this.provider = new ethers.JsonRpcProvider(PROVIDER_URL);
+  constructor(private readonly configService: ConfigService) {}
 
-    this.contract = new ethers.Contract(
-      CONTRACT_ADDRESS,
-      abi,
-      this.provider,
-    );
-
+  onModuleInit() {
+    const providerUrl = this.configService.get<string>('PROVIDER_URL');
+    const contractAddress = this.configService.get<string>('CONTRACT_ADDRESS');
+    const operatorPrivate = this.configService.get<string>('OPERATOR_PRIVATE');
+    if (!providerUrl || !contractAddress || !operatorPrivate) {
+      throw new Error('Missing required environment variables');
+    }
+    this.provider = new ethers.JsonRpcProvider(providerUrl);
+    this.contract = new ethers.Contract(contractAddress, abi, this.provider);
+    this.operatorPrivate = operatorPrivate;
   }
 
   async getBalanceOf(userAddress: string): Promise<any> {
@@ -32,7 +28,7 @@ export class Contract {
   }
 
   async rewardUser(userAddress: string, actionType: number): Promise<any> {
-    const wallet = new ethers.Wallet(OPERATOR_PRIVATE, this.provider);
+    const wallet = new ethers.Wallet(this.operatorPrivate, this.provider);
     const signer = this.provider.getSigner(wallet.address);
     const contractWithSigner = this.contract.connect(await signer) as any; 
     return await contractWithSigner.rewardUser(userAddress, actionType);

@@ -59,3 +59,8 @@ docker run -p 3000:3000 selective-share2
 * Unit 테스트 및 E2E 테스트 준비 중
 
 ---
+
+## 개선 필요
+
+* timeout 추가
+
