@@ -5,6 +5,9 @@ import { Contract } from './app/contract/app.contract';
 import { TerminusModule } from '@nestjs/terminus';
 import { HealthController } from './health/HealthController';
 import { ConfigModule } from '@nestjs/config';
+import { UserModule } from './app/user/user.module';
+import { CreatorModule } from './app/creator/creator.module';
+import { AdvertiserModule } from './app/advertiser/advertiser.module';
 
 @Module({
   imports: [
@@ -12,9 +15,10 @@ import { ConfigModule } from '@nestjs/config';
     ConfigModule.forRoot({
       isGlobal: true, // 모든 모듈에서 ConfigService 자동 사용 가능
     }),
+    UserModule,
+    CreatorModule,
+    AdvertiserModule
   ],
-  controllers: [AppController, HealthController],
-  providers: [AppService, Contract],
-  exports: [Contract], // 다른 모듈에서 사용할 수 있도록 export
+  controllers: [HealthController]
 })
 export class AppModule {}

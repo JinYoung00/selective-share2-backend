@@ -7,7 +7,9 @@ export class ApiKeyGuard implements CanActivate {
 
   canActivate(context: ExecutionContext): boolean {
     const request = context.switchToHttp().getRequest();
-    if (request.path === '/health' || request.path === '/ping') {
+    const whitelistedPaths = this.configService.get<string[]>('WHITELISTED_PATHS') || []; 
+
+    if (whitelistedPaths.includes(request.path)) {
       return true;
     }
 
