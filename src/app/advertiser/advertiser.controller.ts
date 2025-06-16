@@ -66,5 +66,83 @@ export class AdvertiserController {
           totalBudgetUsed: 320000,
         };
     }
+
+    @ApiOperation({
+      summary: '광고 캠페인 목록 조회',
+      description: '광고주가 생성한 광고 캠페인 목록을 반환합니다.',
+    })
+    @ApiParam({
+      name: 'userAddress',
+      description: '광고주의 지갑 주소',
+      example: '0x1234abcd5678efgh9012ijkl3456mnop7890qrst',
+    })
+    @ApiResponse({
+      status: 200,
+      description: '캠페인 목록 조회 성공',
+      schema: {
+        example: {
+          campaigns: [
+            {
+              campaignId: 'cmp-001',
+              name: '친환경 제품 홍보',
+              topic: '환경',
+              budget: 1000,
+              startDate: '2025-06-20',
+              endDate: '2025-07-20',
+              status: 'active',
+            },
+            {
+              campaignId: 'cmp-002',
+              name: '제로 웨이스트 캠페인',
+              topic: '지속가능성',
+              budget: 500,
+              startDate: '2025-05-01',
+              endDate: '2025-06-01',
+              status: 'paused',
+            }
+          ]
+        }
+      }
+    })
+    @Get('/:userAddress/campaigns')
+    getCampaigns(@Param('userAddress') userAddress: string) {
+      return {
+        campaigns: [],
+      };
+    }
     
+    @ApiOperation({
+      summary: '광고 캠페인 일시 중지',
+      description: '지정한 광고 캠페인을 일시 중지합니다.',
+    })
+    @ApiParam({
+      name: 'userAddress',
+      description: '광고주의 지갑 주소',
+      example: '0x1234abcd5678efgh9012ijkl3456mnop7890qrst',
+    })
+    @ApiParam({
+      name: 'campaignId',
+      description: '중지할 광고 캠페인의 ID',
+      example: 'cmp-001',
+    })
+    @ApiResponse({
+      status: 200,
+      description: '캠페인 중지 성공',
+      schema: {
+        example: {
+          success: true,
+          message: '캠페인이 일시 중지되었습니다.',
+        },
+      },
+    })
+    @Post('/:userAddress/campaigns/:campaignId/pause')
+    pauseCampaign(
+      @Param('userAddress') userAddress: string,
+      @Param('campaignId') campaignId: string,
+    ) {
+      return {
+        success: true,
+        message: '캠페인이 일시 중지되었습니다.',
+      };
+    }
 }

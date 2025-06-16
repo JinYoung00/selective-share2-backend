@@ -31,6 +31,46 @@ export class CreatorController {
         };
     }
 
+    @ApiOperation({
+        summary: '광고 슬롯 목록 조회',
+        description: '해당 사용자(creator)가 등록한 광고 슬롯 목록을 반환합니다.',
+      })
+      @ApiParam({
+        name: 'userAddress',
+        description: '콘텐츠 생산자의 지갑 주소',
+        example: '0x1234abcd5678efgh9012ijkl3456mnop7890qrst',
+      })
+      @ApiResponse({
+        status: 200,
+        description: '슬롯 목록 조회 성공',
+        schema: {
+          example: {
+            slots: [
+              {
+                slotId: 'slot-001',
+                slotType: 'banner',
+                status: 'active',
+                uri: 'https://example.com/ad-slot-001',
+                registeredAt: '2024-06-01T12:34:56Z',
+              },
+              {
+                slotId: 'slot-002',
+                slotType: 'text',
+                status: 'inactive',
+                uri: 'https://example.com/ad-slot-002',
+                registeredAt: '2024-06-03T09:20:15Z',
+              }
+            ]
+          }
+        },
+      })
+      @Get('/:userAddress/slots')
+      getCreatorSlots(@Param('userAddress') userAddress: string) {
+        return {
+          slots: [],
+        };
+      }
+
     @Get(':userAddress/earnings')
     @ApiOperation({ summary: '수익 내역 조회' })
     @ApiParam({ name: 'userAddress', description: '지갑 주소 또는 유저 식별자' })

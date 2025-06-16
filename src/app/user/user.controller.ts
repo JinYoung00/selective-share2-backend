@@ -1,5 +1,5 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
-import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { ApiBody, ApiOperation, ApiParam, ApiResponse, ApiTags, ApiQuery } from '@nestjs/swagger';
 import { SubmitDto } from './dto/submit.dto';
 import { UserService } from './user.service';
 import { ApiSecurity } from '@nestjs/swagger';
@@ -31,6 +31,56 @@ export class UserController {
       "status": "success",
       "message": "잔액 조회 완료"
     };
+  }
+  @ApiOperation({ summary: '사용자 참여 및 보상 이력 조회', description: '사용자가 참여한 캠페인과 받은 보상을 날짜별로 조회합니다.' })
+  @ApiParam({ name: 'userAddress', description: '사용자의 지갑 주소', example: '0x1234...abcd' })
+  @ApiQuery({ name: 'from', required: false, description: '시작 날짜 (YYYY-MM-DD)', example: '2024-06-01' })
+  @ApiQuery({ name: 'to', required: false, description: '종료 날짜 (YYYY-MM-DD)', example: '2024-06-15' })
+  @ApiResponse({
+    status: 200,
+    description: '이력 목록 조회 성공',
+    schema: {
+      example: {
+        history: [
+          {
+            date: '2024-06-14',
+            actions: [
+              {
+                type: 'ad_view',
+                campaign: '친환경 세제 캠페인',
+                reward: '10 PDT',
+                txHash: '0xabc123...'
+              },
+              {
+                type: 'form_submit',
+                campaign: '건강 설문조사',
+                reward: '5 PDT',
+                txHash: '0xdef456...'
+              }
+            ]
+          },
+          {
+            date: '2024-06-13',
+            actions: [
+              {
+                type: 'campaign_join',
+                campaign: 'NFT 퀘스트',
+                reward: '15 PDT',
+                txHash: '0xghi789...'
+              }
+            ]
+          }
+        ]
+      }
+    }
+  })
+  @Get('/:userAddress/history')
+  getHistory(
+    @Param('userAddress') userAddress: string,
+    @Query('from') from?: string,
+    @Query('to') to?: string
+  ) {
+    return { history: [] }; // mock response
   }
 
   @Post('/:userAddress/data')

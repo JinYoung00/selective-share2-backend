@@ -15,5 +15,6 @@ export class SubmitDto {
   @IsIn(['ad_click', 'form_submit', 'campaign_join'])
   type?: 'ad_click' | 'form_submit' | 'campaign_join'; // 행동 유형, 선택사항
 
-  signature?: string; // 프론트에서 서명한 메시지 (선택사항)
+  @ApiProperty({ description: '서명값', example: '0x9c6f8e5aa07dfc9a4cf0a...1e719f08cb1d' })
+  signature?: string;
 }
